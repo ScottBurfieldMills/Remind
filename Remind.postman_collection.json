@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "fa28e778-6534-446f-9707-350c83b81730",
+		"name": "Remind",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"FirstName\": \"Scott\",\n\t\"LastName\": \"Burfield-Mills\",\n\t\"Username\": \"scott\",\n\t\"Password\": \"asd123\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44319/users/register",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44319",
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Username\": \"scott\",\n\t\"Password\": \"asd123\"\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44319/users/authenticate",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44319",
+					"path": [
+						"users",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Reminder",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1NDQ5MTQyNDksImV4cCI6MTU0NTUxOTA0OSwiaWF0IjoxNTQ0OTE0MjQ5fQ.BfZkLDYyOOBAU0JHpRHNqGrENG7_HF4NJ0alIHCWZT8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Url\": \"https://google.co.nz\"\t\n}"
+				},
+				"url": {
+					"raw": "https://localhost:44319/reminders/create",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44319",
+					"path": [
+						"reminders",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Reminders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEiLCJuYmYiOjE1NDQ5MTMyODgsImV4cCI6MTU0NTUxODA4OCwiaWF0IjoxNTQ0OTEzMjg4fQ.h_gmiFYqdswftzEqbW3fY_mRyREzcThMBgWT3Om8hSY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://localhost:44319/reminders/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44319",
+					"path": [
+						"reminders",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
