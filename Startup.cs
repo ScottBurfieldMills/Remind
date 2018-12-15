@@ -31,8 +31,6 @@ namespace Remind
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
 
-            IdentityModelEventSource.ShowPII = true;
-
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -117,7 +115,7 @@ namespace Remind
             });
 
             services.AddScoped<IUserService, UserService>();
-
+            services.AddScoped<IReminderService, ReminderService>();
             services.AddAutoMapper();
         }
 

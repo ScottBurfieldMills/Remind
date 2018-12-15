@@ -10,6 +10,8 @@ namespace Remind.Helpers
         {
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+            CreateMap<Reminder, ReminderDto>();
+            CreateMap<ReminderDto, Reminder>();
         }
     }
 }
