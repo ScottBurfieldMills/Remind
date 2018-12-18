@@ -6,10 +6,11 @@ import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { LoginPage } from './components/LoginPage';
+import { LogoutPage } from './components/LogoutPage'; 
 import { history } from './helpers';
 import { alertActions } from './actions';
 
-/*export default */class App extends Component {
+class App extends Component {
   static displayName = App.name;
 
   constructor(props) {
@@ -25,12 +26,13 @@ import { alertActions } from './actions';
   render () {
     return (
         <Layout>
-                <div>
-	                <Route exact path='/' component={Home} />
-	                <Route path='/counter' component={Counter} />
-	                <Route path='/fetch-data' component={FetchData} />
-                    <Route path='/login' component={LoginPage} />
-				</div>
+            <div>
+                <Route exact path='/' component={Home} />
+                <Route path='/counter' component={Counter} />
+                <Route path='/fetch-data' component={FetchData} />
+            	<Route path='/login' component={LoginPage} />
+            	<Route path='/logout' component={LogoutPage} />
+            </div>
       </Layout>
     );
   }

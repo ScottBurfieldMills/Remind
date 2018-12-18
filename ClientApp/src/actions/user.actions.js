@@ -33,8 +33,13 @@ function login(username, password) {
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 
-function logout() {
+function logout(redirectToHomepage=false) {
     userService.logout();
+
+    if (redirectToHomepage) {
+	    history.push('/');
+    }
+
     return { type: userConstants.LOGOUT };
 }
 

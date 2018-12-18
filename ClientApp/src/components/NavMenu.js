@@ -41,7 +41,7 @@ export class NavMenu extends Component {
                                 </NavItem>
                                 <NavItem>
                                     {localStorage.getItem('user')
-                                        ? <NavLink tag={Link} className="text-dark" to="/logout">TODO Logout</NavLink>
+                                        ? <NavLink tag={Link} className="text-dark" to="/logout">Logout</NavLink>
                                         : <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
                                     }
                                 </NavItem>
