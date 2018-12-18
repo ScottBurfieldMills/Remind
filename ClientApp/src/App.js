@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route } from 'react-router';
+import { Router, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
@@ -25,14 +25,12 @@ import { alertActions } from './actions';
   render () {
     return (
         <Layout>
-            <Router history={history}>
                 <div>
 	                <Route exact path='/' component={Home} />
 	                <Route path='/counter' component={Counter} />
 	                <Route path='/fetch-data' component={FetchData} />
                     <Route path='/login' component={LoginPage} />
 				</div>
-			</Router>
       </Layout>
     );
   }
@@ -45,5 +43,5 @@ function mapStateToProps(state) {
 	};
 }
 
-const connectedApp = connect(mapStateToProps)(App);
+const connectedApp = withRouter(connect(mapStateToProps)(App));
 export { connectedApp as App }; 
