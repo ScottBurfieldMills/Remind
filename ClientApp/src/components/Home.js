@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
+import { ReminderList } from './ReminderList'
 
 export class Home extends Component {
-  static displayName = Home.name;
+    static displayName = Home.name;
 
-  render () {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-      </div>
-    );
-  }
+    render() {
+        const user = localStorage.getItem('user');
+
+        return (
+            <div>
+                {user &&
+                    <ReminderList></ReminderList>
+                }
+            </div>
+        );
+    }
 }
