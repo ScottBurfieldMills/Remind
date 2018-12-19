@@ -10,37 +10,43 @@ import { history } from './helpers';
 import { alertActions } from './actions';
 
 class App extends Component {
-  static displayName = App.name;
+    static displayName = App.name;
 
-  constructor(props) {
-	  super(props);
+    constructor(props) {
+        super(props);
 
-	  const { dispatch } = this.props;
-	  history.listen((location, action) => {
-		  // clear alert on location change
-		  dispatch(alertActions.clear());
-	  });
-  }
+        const { dispatch } = this.props;
+        history.listen((location, action) => {
+            // clear alert on location change
+            dispatch(alertActions.clear());
+        });
+    }
 
-  render () {
-    return (
-        <Layout>
-            <div>
-                <Route exact path='/' component={Home} />
-            	<Route path='/login' component={LoginPage} />
-                <Route path='/logout' component={LogoutPage} />
-                <Route path='/register' component={RegisterPage} />
-            </div>
-      </Layout>
-    );
-  }
+    render() {
+        const alert = this.props.alert;
+
+        return (
+            <Layout>
+                {alert.message &&
+                    <div className={`alert ${alert.type}`}>{alert.message}</div>
+                }
+
+                <div>
+                    <Route exact path='/' component={Home} />
+                    <Route path='/login' component={LoginPage} />
+                    <Route path='/logout' component={LogoutPage} />
+                    <Route path='/register' component={RegisterPage} />
+                </div>
+            </Layout>
+        );
+    }
 }
 
 function mapStateToProps(state) {
-	const { alert } = state;
-	return {
-		alert
-	};
+    const { alert } = state;
+    return {
+        alert
+    };
 }
 
 const connectedApp = withRouter(connect(mapStateToProps)(App));
