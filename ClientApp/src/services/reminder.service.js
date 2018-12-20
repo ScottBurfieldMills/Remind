@@ -1,7 +1,8 @@
 ﻿import { authHeader } from '../helpers';
 
 export const reminderService = {
-    getAll
+    getAll,
+    create
 }
 
 function getAll() {
@@ -11,6 +12,20 @@ function getAll() {
     };
 
 	return fetch(`/reminders`, requestOptions).then(handleResponse);
+}
+
+function create(url) {
+	const requestOptions = {
+        method: 'POST',
+		headers: {
+            ...authHeader(),
+			'Content-Type': 'application/json'
+    },
+		body: JSON.stringify({ url: url })
+    };
+
+	return fetch(`/reminders/create`, requestOptions)
+		.then(handleResponse);
 }
 
 function handleResponse(response) {

@@ -7,6 +7,7 @@ export function reminders(state = {}, action) {
                 loading: true
             };
         case reminderConstants.GETALL_SUCCESS:
+
             return {
                 items: action.reminders
             };
@@ -14,6 +15,12 @@ export function reminders(state = {}, action) {
             return {
                 error: action.error
             };
+        case reminderConstants.CREATE_SUCCESS:
+            state.items.push(action.reminder);
+
+            return {
+                ...state
+            }
         default:
             return state;
     }

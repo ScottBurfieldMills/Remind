@@ -46,8 +46,11 @@ namespace Remind.Controllers
 
             try
             {
-                _reminderService.Create(reminder);
-                return Ok();
+                reminder = _reminderService.Create(reminder);
+
+                var createdReminderDto = _mapper.Map<ReminderDto>(reminder);
+
+                return Ok(createdReminderDto);
             }
             catch (AppException ex)
             {

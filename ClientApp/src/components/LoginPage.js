@@ -14,8 +14,7 @@ class LoginPage extends React.Component {
         this.state = {
             username: '',
             password: '',
-            submitted: false,
-            invalidCredentials: false
+            submitted: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -30,7 +29,7 @@ class LoginPage extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        this.setState({ submitted: true, invalidCredentials: false });
+        this.setState({ submitted: true });
         const { username, password } = this.state;
         const { dispatch } = this.props;
         if (username && password) {
@@ -40,7 +39,7 @@ class LoginPage extends React.Component {
 
     render() {
         const { loggingIn } = this.props;
-        const { username, password, submitted, invalidCredentials } = this.state;
+        const { username, password, submitted } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
                 <h2>Login</h2>
@@ -66,12 +65,6 @@ class LoginPage extends React.Component {
                         }
                         <Link to="/register" className="btn btn-link">Register</Link>
                     </div>
-
-                    {invalidCredentials &&
-                        <div className="alert alert-danger" role="alert">
-                        	Invalid username and password combination
-						</div>
-                    }
                 </form>
             </div>
         );

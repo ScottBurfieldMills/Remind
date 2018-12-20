@@ -19,22 +19,21 @@ class ReminderList extends React.Component {
         }
 
         if (this.props.reminders.items && this.props.reminders.items.length > 0) {
-            console.log(this.props.reminders);
             reminderList = (
-                <ul>
-                    {this.props.reminders.items.map((reminder, i) => {
-                        return (<li key={reminder.url + i}>
+	            <ul>
+                    {this.props.reminders.items.map((reminder) => {
+	                    return (<li key={reminder.id}>
                             <a href={reminder.url} target="blank">
                                 {reminder.url}
                             </a>
-                        </li>)
+                        </li>);
                     })}
                 </ul>
-            )
+            );
         } else if (this.props.reminders.items && this.props.reminders.items.length === 0 && !loading) {
-            reminderList = (
-                <h2>No reminders!</h2>
-			)
+	        reminderList = (
+		        <h2>No reminders!</h2>
+	        );
         }
 
         return (

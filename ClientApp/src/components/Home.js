@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { ReminderList } from './ReminderList'
+import { CreateReminder } from './CreateReminder'
+import { connect } from 'react-redux'
 
-export class Home extends Component {
+class Home extends Component {
     static displayName = Home.name;
 
     render() {
@@ -10,9 +12,15 @@ export class Home extends Component {
         return (
             <div>
                 {user &&
-                    <ReminderList></ReminderList>
+                    <div>
+	                    <CreateReminder></CreateReminder>
+	                    <ReminderList></ReminderList>
+					</div>
                 }
             </div>
         );
     }
 }
+
+const connectedHome = connect()(Home);
+export { connectedHome as Home}; 
