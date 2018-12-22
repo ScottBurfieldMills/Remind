@@ -13,5 +13,20 @@ namespace Remind.Dtos
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+
+        public string DefaultReminderFrequency { get; set; }
+    }
+
+    public class UpdateUserSettingsDto
+    {
+        public string DefaultReminderFrequency { get; set; }
+    }
+
+    public class UserSettingsDto
+    {
+        public int SelectedReminderFrequencyId { get; set; }
+        public List<NotificationTypeDto> PossibleNotificationTypes { get; set; }
+
+        public int SelectedNotificationTypeId { get; set; }
     }
 }

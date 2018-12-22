@@ -28,8 +28,14 @@ namespace Remind
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionStringsSection = Configuration.GetSection("ConnectionStrings");
+            services.Configure<ConnectionStrings>(connectionStringsSection);
+
+            var connectionStrings = connectionStringsSection.Get<ConnectionStrings>();
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDbContext<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
+            //services.AddDbContext<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
+            services.AddDbContext<DataContext>(x => x.UseSqlServer(connectionStrings.Default));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -80,6 +86,8 @@ namespace Remind
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IReminderService, ReminderService>();
+            services.AddScoped<IUserSettingsService, UserSettingsService>();
+            services.AddScoped<INotificationService, NotificationService>();
             services.AddAutoMapper();
         }
 

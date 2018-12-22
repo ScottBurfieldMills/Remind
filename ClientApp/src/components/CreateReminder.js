@@ -7,7 +7,8 @@ class CreateReminder extends React.Component {
 		super(props);
 
 		this.state = {
-			url: ''
+			url: '',
+            submitted: false
 		};
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,6 +23,8 @@ class CreateReminder extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
+        this.setState({ submitted: true });
+
         const { url } = this.state;
         const { dispatch } = this.props;
 
@@ -29,24 +32,29 @@ class CreateReminder extends React.Component {
             dispatch(reminderActions.create(url));
             
             this.setState({
-	            url: ''
+	            url: '',
+                submitted: false
             });
         }
     }
 
     render() {
+	    const { url, submitted } = this.state;
+
         return (
-            <div className="col-md-6">
+            <div className="col-md-12">
                 <h2>Create Reminder</h2>
 
                 <form name="form" onSubmit={this.handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="url">Url</label>
-                        <input type="text" className="form-control" value={this.state.url} name="url" onChange={this.handleChange} />
+                    <div className={'form-group row ' + (submitted && !url ? ' has-error' : '')}>
+                        <label htmlFor="url" className="col-sm-1">Url</label>
+                        <div className="col-sm-11">
+	                        <input type="text" className="form-control" value={this.state.url} name="url" onChange={this.handleChange} />
+                        </div>
                     </div>
 
                     <div className="form-group">
-                        <button className="btn btn-primary">Create Reminder</button>
+                        <button className="btn btn-primary">Create</button>
                     </div>
                 </form>
             </div>  

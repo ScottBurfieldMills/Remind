@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { LoginPage } from './components/LoginPage';
 import { LogoutPage } from './components/LogoutPage';
 import { RegisterPage } from './components/RegisterPage';
+import { AccountPage } from './components/AccountPage';
+import { CreateReminderPage } from './components/CreateReminderPage';
+import { PrivateRoute } from './components/PrivateRoute';
 import { history } from './helpers';
 import { alertActions } from './actions';
 
@@ -31,11 +34,15 @@ class App extends Component {
                     <div className={`alert ${alert.type}`}>{alert.message}</div>
                 }
 
-                <div>
-                    <Route exact path='/' component={Home} />
-                    <Route path='/login' component={LoginPage} />
-                    <Route path='/logout' component={LogoutPage} />
-                    <Route path='/register' component={RegisterPage} />
+                <div className="row">
+                    <Switch>
+                        <Route exact path='/' component={Home} />
+                        <Route path='/login' component={LoginPage} />
+                        <Route path='/logout' component={LogoutPage} />
+                        <Route path='/register' component={RegisterPage} />
+                        <PrivateRoute path='/account' component={AccountPage} />
+                        <Route component={CreateReminderPage} />
+					</Switch>
                 </div>
             </Layout>
         );

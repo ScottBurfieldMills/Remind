@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Remind.Entities
 {
@@ -14,5 +10,13 @@ namespace Remind.Entities
         public string Username { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        
+        public int ReminderFrequencyId { get; set; }
+        [ForeignKey("ReminderFrequencyId")]
+        public ReminderFrequency ReminderFrequency { get; set; }
+
+        public int UserNotificationTypeId { get; set; }
+        [ForeignKey("UserNotificationTypeId")]
+        public UserNotificationType UserNotificationType { get; set; }
     }
 }

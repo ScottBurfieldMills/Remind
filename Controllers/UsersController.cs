@@ -15,23 +15,29 @@ using System.Text;
 
 namespace Remind.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private IUserService _userService;
-        private IMapper _mapper;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
+        private readonly IUserSettingsService _userSettingsService;
+        private readonly INotificationService _notificationService;
 
         public UsersController(
             IUserService userService,
             IMapper mapper,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            IUserSettingsService userSettingsService,
+            INotificationService notificationService)
         {
             _userService = userService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
+            _userSettingsService = userSettingsService;
+            _notificationService = notificationService;
         }
 
         [AllowAnonymous]
@@ -61,10 +67,10 @@ namespace Remind.Controllers
             // return basic user info (without password) and token to store client side
             return Ok(new
             {
-                Id = user.Id,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                user.Id,
+                user.Username,
+                user.FirstName,
+                user.LastName,
                 Token = tokenString
             });
         }
@@ -79,7 +85,8 @@ namespace Remind.Controllers
             try
             {
                 // save 
-                _userService.Create(user, userDto.Password);
+                user = _userService.Create(user, userDto.Password);
+
                 return Ok();
             }
             catch (AppException ex)
@@ -123,6 +130,43 @@ namespace Remind.Controllers
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [HttpPatch("{id}/settings")]
+        public IActionResult UpdateSettings(int id, [FromBody] UpdateUserSettingsDto updateUserSettingsDto)
+        {
+            var user = _userService.GetById(id);
+            user.DefaultReminderFrequency = updateUserSettingsDto.DefaultReminderFrequency;
+
+            try
+            {
+                _userService.Update(user);
+
+                return Ok(updateUserSettingsDto);
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("{id}/settings")]
+        public IActionResult GetSettings(int id)
+        {
+            var user = _userService.GetById(id);
+
+            var notificationTypes = _notificationService.GetTypes();
+            var notificationTypeDtos = _mapper.Map<List<NotificationTypeDto>>(notificationTypes);
+
+            var userSettingsDto = new UserSettingsDto
+            {
+                SelectedNotificationTypeId = user.UserNotificationTypeId,
+                PossibleNotificationTypes = notificationTypeDtos,
+                SelectedReminderFrequencyId = user.DefaultReminderFrequencyId
+            };
+
+            return Ok(userSettingsDto);
         }
 
         [HttpDelete("{id}")]

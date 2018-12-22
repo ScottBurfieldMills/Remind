@@ -8,6 +8,9 @@ export const userActions = {
     logout,
     register,
     getAll,
+    update,
+    updateSettings,
+    getSettings,
     delete: _delete
 };
 
@@ -80,6 +83,60 @@ function getAll() {
     function request() { return { type: userConstants.GETALL_REQUEST } }
     function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
     function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+}
+
+function update(user) {
+	return dispatch => {
+        dispatch(request());
+
+        userService.update(user)
+            .then(
+	            user => dispatch(success(user)),
+                error => dispatch(failure(error.toString()))
+	        );
+	};
+
+	function request() { return { type: userConstants.UPDATE_REQUEST } }
+	function success(users) { return { type: userConstants.UPDATE_SUCCESS, users } }
+	function failure(error) { return { type: userConstants.UPDATE_FAILURE, error } }
+}
+
+function updateSettings(userId, userSettings) {
+	return dispatch => {
+		dispatch(request());
+
+        userService.updateSettings(userId, userSettings)
+			.then(
+				userSettings => {
+                    dispatch(success(userSettings));
+                    dispatch(alertActions.success('Settings saved.'));
+				},
+				error => dispatch(failure(error.toString()))
+			);
+	};
+
+	function request() { return { type: userConstants.UPDATE_SETTINGS_REQUEST } }
+	function success(users) { return { type: userConstants.UPDATE_SETTINGS_SUCCESS, users } }
+	function failure(error) { return { type: userConstants.UPDATE_SETTINGS_FAILURE, error } }
+}
+
+function getSettings(userId) {
+	return dispatch => {
+		dispatch(request());
+
+		userService.getSettings(userId)
+			.then(
+				userSettings => {
+					dispatch(success(userSettings));
+					dispatch(alertActions.success());
+				},
+				error => dispatch(failure(error.toString()))
+			);
+	};
+
+	function request() { return { type: userConstants.GET_SETTINGS_REQUEST } }
+    function success(userSettings) { return { type: userConstants.GET_SETTINGS_SUCCESS, userSettings } }
+    function failure(error) { return { type: userConstants.GET_SETTINGS_FAILURE, error } }
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript

@@ -14,5 +14,7 @@ namespace Remind.Entities
         public DateTime CreatedOn { get; set; }
 
         public string Url { get; set; }
+
+        public DateTime RemindAt { get; set; }
     }
 }

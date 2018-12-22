@@ -15,7 +15,15 @@ export function reminders(state = {}, action) {
             return {
                 error: action.error
             };
+        case reminderConstants.CREATE_REQUEST:
+            return {
+                loading: true
+	        };
         case reminderConstants.CREATE_SUCCESS:
+            if (!state.items) {
+	            state.items = [];
+            }
+
             state.items.push(action.reminder);
 
             return {

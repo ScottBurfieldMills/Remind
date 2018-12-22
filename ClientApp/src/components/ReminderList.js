@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { reminderActions } from '../actions';
 
 class ReminderList extends React.Component {
+
     componentDidMount() {
         this.props.dispatch(reminderActions.getAll());
     }
@@ -23,7 +24,7 @@ class ReminderList extends React.Component {
 	            <ul>
                     {this.props.reminders.items.map((reminder) => {
 	                    return (<li key={reminder.id}>
-                            <a href={reminder.url} target="blank">
+                            <a href={reminder.url} target="blank" placeholder="https://www.example.com">
                                 {reminder.url}
                             </a>
                         </li>);
@@ -37,7 +38,7 @@ class ReminderList extends React.Component {
         }
 
         return (
-            <div>
+            <div className="col-md-12">
                 <h2>Reminder List</h2>
 
                 {reminderList}

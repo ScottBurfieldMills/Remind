@@ -17,6 +17,12 @@ class Home extends Component {
 	                    <ReminderList></ReminderList>
 					</div>
                 }
+                {!user &&
+                    <div>
+	                    <h1>Reminders</h1>
+						<p>Login or sign up to continue.</p>
+					</div>
+                }
             </div>
         );
     }

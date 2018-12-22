@@ -22,16 +22,16 @@ export class NavMenu extends Component {
     }
 
     render() {
-	    let user = localStorage.getItem('user');
+        const user = localStorage.getItem('user');
 
         return (
             <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+                <Navbar className="navbar-expand-sm border-bottom box-shadow mb-3" light>
                     <Container>
                         <NavbarBrand tag={Link} to="/">Remind</NavbarBrand>
                         <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
-                            <ul className="navbar-nav flex-grow">
+                            <ul className="navbar-nav">
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                                 </NavItem>
@@ -43,7 +43,12 @@ export class NavMenu extends Component {
                                 </NavItem>
                                 {user &&
                                     <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/register" />
+	                                    <NavLink tag={Link} className="text-dark" to="/account">Account</NavLink>
+                                    </NavItem>
+                                }
+                                {!user &&
+                                    <NavItem>
+										<NavLink tag={Link} className="text-dark" to="/register">Register</NavLink>
                                     </NavItem>
 								}
                             </ul>

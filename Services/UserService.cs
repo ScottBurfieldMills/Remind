@@ -69,6 +69,11 @@ namespace Remind.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
+            user.UserNotificationType = new UserNotificationType
+            {
+                NotificationTypeId = (int)NotificationTypeEnum.Email
+            };
+
             _context.Users.Add(user);
             _context.SaveChanges();
 

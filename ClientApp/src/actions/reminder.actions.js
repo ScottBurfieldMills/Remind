@@ -32,7 +32,10 @@ function create(url) {
 
 		reminderService.create(url)
 			.then(
-				reminder => dispatch(success(reminder)),
+				reminder => {
+                    dispatch(success(reminder));
+                    dispatch(alertActions.success('Created reminder'));
+				},
 				error => {
 					dispatch(failure(error.toString()));
 					dispatch(alertActions.error(error.toString()));

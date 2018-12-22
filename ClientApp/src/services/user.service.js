@@ -7,6 +7,8 @@ export const userService = {
     getAll,
     getById,
     update,
+    getSettings,
+    updateSettings,
     delete: _delete
 };
 
@@ -73,6 +75,27 @@ function update(user) {
     return fetch(`/users/${user.id}`, requestOptions).then(handleResponse);
 }
 
+function updateSettings(userId, userSettings) {
+    const requestOptions = {
+	    method: 'PATCH',
+	    headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(userSettings)
+    };
+
+    console.log(requestOptions);
+
+    return fetch(`/users/${userId}/settings`, requestOptions).then(handleResponse);
+}
+
+function getSettings(userId) {
+	const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+	return fetch(`/users/${userId}/settings`, requestOptions).then(handleResponse);
+}
+
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
     const requestOptions = {
@@ -89,8 +112,8 @@ function handleResponse(response) {
         if (!response.ok) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
-                logout();
-                window.location.reload(true);
+                //logout();
+                //window.location.reload(true);
             }
 
             const error = (data && data.message) || response.statusText;
