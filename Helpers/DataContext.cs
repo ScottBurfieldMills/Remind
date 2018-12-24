@@ -16,6 +16,8 @@ namespace Remind.Helpers
 
         public DbSet<UserNotificationType> UserNotificationTypes { get; set; }
 
+        public DbSet<ReminderFrequency> ReminderFrequency { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()

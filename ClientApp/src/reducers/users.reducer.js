@@ -45,7 +45,6 @@ export function users(state = {}, action) {
                 })
             };
         case userConstants.GET_SETTINGS_SUCCESS:
-            console.log('uconst', action);
             return {
                 userSettings: action.userSettings
             }

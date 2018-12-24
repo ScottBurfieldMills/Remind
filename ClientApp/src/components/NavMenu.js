@@ -35,17 +35,17 @@ export class NavMenu extends Component {
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                                 </NavItem>
+	                            {user &&
+                                    <NavItem>
+                                        <NavLink tag={Link} className="text-dark" to="/account">Account</NavLink>
+                                    </NavItem>
+                                }
                                 <NavItem>
                                     {user
                                         ? <NavLink tag={Link} className="text-dark" to="/logout">Logout</NavLink>
                                         : <NavLink tag={Link} className="text-dark" to="/login">Login</NavLink>
                                     }
                                 </NavItem>
-                                {user &&
-                                    <NavItem>
-	                                    <NavLink tag={Link} className="text-dark" to="/account">Account</NavLink>
-                                    </NavItem>
-                                }
                                 {!user &&
                                     <NavItem>
 										<NavLink tag={Link} className="text-dark" to="/register">Register</NavLink>

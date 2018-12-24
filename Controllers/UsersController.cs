@@ -23,20 +23,20 @@ namespace Remind.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
-        private readonly IUserSettingsService _userSettingsService;
+        private readonly IReminderService _reminderService;
         private readonly INotificationService _notificationService;
 
         public UsersController(
             IUserService userService,
             IMapper mapper,
             IOptions<AppSettings> appSettings,
-            IUserSettingsService userSettingsService,
+            IReminderService reminderService,
             INotificationService notificationService)
         {
             _userService = userService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
-            _userSettingsService = userSettingsService;
+            _reminderService = reminderService;
             _notificationService = notificationService;
         }
 
@@ -71,7 +71,8 @@ namespace Remind.Controllers
                 user.Username,
                 user.FirstName,
                 user.LastName,
-                Token = tokenString
+                Token = tokenString,
+                user.ReminderFrequencyId
             });
         }
 
@@ -85,7 +86,7 @@ namespace Remind.Controllers
             try
             {
                 // save 
-                user = _userService.Create(user, userDto.Password);
+                _userService.Create(user, userDto.Password);
 
                 return Ok();
             }
@@ -136,7 +137,7 @@ namespace Remind.Controllers
         public IActionResult UpdateSettings(int id, [FromBody] UpdateUserSettingsDto updateUserSettingsDto)
         {
             var user = _userService.GetById(id);
-            user.DefaultReminderFrequency = updateUserSettingsDto.DefaultReminderFrequency;
+            user.ReminderFrequencyId = updateUserSettingsDto.DefaultReminderFrequency;
 
             try
             {
@@ -159,11 +160,15 @@ namespace Remind.Controllers
             var notificationTypes = _notificationService.GetTypes();
             var notificationTypeDtos = _mapper.Map<List<NotificationTypeDto>>(notificationTypes);
 
+            var reminderFrequencies = _reminderService.GetFrequencies();
+            var reminderFrequencyDtos = _mapper.Map<List<ReminderFrequencyDto>>(reminderFrequencies);
+
             var userSettingsDto = new UserSettingsDto
             {
                 SelectedNotificationTypeId = user.UserNotificationTypeId,
                 PossibleNotificationTypes = notificationTypeDtos,
-                SelectedReminderFrequencyId = user.DefaultReminderFrequencyId
+                SelectedReminderFrequencyId = user.ReminderFrequencyId,
+                PossibleReminderFrequencies = reminderFrequencyDtos
             };
 
             return Ok(userSettingsDto);

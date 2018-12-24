@@ -16,5 +16,9 @@ namespace Remind.Entities
         public string Url { get; set; }
 
         public DateTime RemindAt { get; set; }
+
+        [ForeignKey("ReminderFrequencyId")]
+        public ReminderFrequency ReminderFrequency { get; set; }
+        public int ReminderFrequencyId { get; set; }
     }
 }

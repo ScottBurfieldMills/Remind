@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Remind.Helpers;
 
 namespace Remind.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20181222072302_CreateReminderFrequency")]
+    partial class CreateReminderFrequency
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,15 +44,11 @@ namespace Remind.Migrations
 
                     b.Property<DateTime>("RemindAt");
 
-                    b.Property<int>("ReminderFrequencyId");
-
                     b.Property<string>("Url");
 
                     b.Property<int>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReminderFrequencyId");
 
                     b.HasIndex("UserId");
 
@@ -121,11 +119,6 @@ namespace Remind.Migrations
 
             modelBuilder.Entity("Remind.Entities.Reminder", b =>
                 {
-                    b.HasOne("Remind.Entities.ReminderFrequency", "ReminderFrequency")
-                        .WithMany()
-                        .HasForeignKey("ReminderFrequencyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Remind.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")

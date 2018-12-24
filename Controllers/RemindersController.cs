@@ -58,6 +58,15 @@ namespace Remind.Controllers
             }
         }
 
+        [HttpGet("frequencies")]
+        public IActionResult Frequencies()
+        {
+            var reminderFrequencies = _reminderService.GetFrequencies();
+            var reminderFrequencyDtos = _mapper.Map<List<ReminderFrequencyDto>>(reminderFrequencies);
+            
+            return Ok(reminderFrequencyDtos);
+        }
+
         private int GetUserId()
         {
             var userId = int.Parse(User.Identity.Name);

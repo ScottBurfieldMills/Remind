@@ -14,6 +14,8 @@ namespace Remind.Services
         IEnumerable<Reminder> GetByUser(int userId);
 
         Reminder Create(Reminder reminder);
+
+        IEnumerable<ReminderFrequency> GetFrequencies();
     }
 
     public class ReminderService : IReminderService
@@ -53,12 +55,30 @@ namespace Remind.Services
             // Validation
             if (reminder.User == null) throw new AppException("Reminder must be associated with a user");
 
-            reminder.CreatedOn = DateTime.Now;  
+            reminder.CreatedOn = DateTime.Now;
+            reminder.RemindAt = GetReminderDate(reminder);
 
             _context.Reminders.Add(reminder);
             _context.SaveChanges();
 
             return reminder;
+        }
+
+        private DateTime GetReminderDate(Reminder reminder)
+        {
+            var numberOfDays = _context.ReminderFrequency
+                .Where(x => x.Id == reminder.ReminderFrequencyId)
+                .Select(x => x.NumberOfDays)
+                .First();
+
+            var reminderDate = reminder.CreatedOn.AddDays(numberOfDays);
+
+            return reminderDate;
+        }
+
+        public IEnumerable<ReminderFrequency> GetFrequencies()
+        {
+            return _context.ReminderFrequency.ToList();
         }
     }
 }

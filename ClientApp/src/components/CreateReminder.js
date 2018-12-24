@@ -1,18 +1,25 @@
 ﻿import React from 'react';
 import { connect } from 'react-redux';
 import { reminderActions } from '../actions';
+import { ReminderFrequencyList } from './ReminderFrequencyList';
 
 class CreateReminder extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			url: '',
+            url: '',
+            frequencyId: this.props.user.reminderFrequencyId,
             submitted: false
 		};
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.onSelectFrequency = this.onSelectFrequency.bind(this);
+	}
+
+    componentDidMount() {
+	    this.props.dispatch(reminderActions.getReminderFrequencies());
     }
 
     handleChange(event) {
@@ -25,17 +32,23 @@ class CreateReminder extends React.Component {
 
         this.setState({ submitted: true });
 
-        const { url } = this.state;
+        const { url, frequencyId } = this.state;
         const { dispatch } = this.props;
 
         if (url) {
-            dispatch(reminderActions.create(url));
+            dispatch(reminderActions.create(url, frequencyId));
             
             this.setState({
 	            url: '',
                 submitted: false
             });
         }
+    }
+
+    onSelectFrequency(frequencyId) {
+	    this.setState({
+		    frequencyId: frequencyId
+	    });
     }
 
     render() {
@@ -47,12 +60,17 @@ class CreateReminder extends React.Component {
 
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group row ' + (submitted && !url ? ' has-error' : '')}>
-                        <label htmlFor="url" className="col-sm-1">Url</label>
-                        <div className="col-sm-11">
+                        <label htmlFor="url" className="col-sm-2">Url</label>
+                        <div className="col-sm-10">
 	                        <input type="text" className="form-control" value={this.state.url} name="url" onChange={this.handleChange} />
                         </div>
                     </div>
-
+                    
+                    <ReminderFrequencyList frequencies={this.props.frequencies}
+						label="Remind"
+                        selectedFrequency={this.state.frequencyId}
+                        onSelectFrequency={this.onSelectFrequency}></ReminderFrequencyList>
+            
                     <div className="form-group">
                         <button className="btn btn-primary">Create</button>
                     </div>
@@ -62,5 +80,15 @@ class CreateReminder extends React.Component {
     }
 }
 
-const connectedCreateReminder = connect()(CreateReminder);
+function mapStateToProps(state) {
+    const { frequencies } = state.reminders;
+    const { user } = state.authentication;
+
+    return {
+        frequencies,
+        user
+	};
+}
+
+const connectedCreateReminder = connect(mapStateToProps)(CreateReminder);
 export { connectedCreateReminder as CreateReminder }; 

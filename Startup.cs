@@ -13,6 +13,7 @@ using Remind.Helpers;
 using Remind.Services;
 using System.Text;
 using System.Threading.Tasks;
+using Remind.Entities;
 
 namespace Remind
 {
@@ -88,6 +89,7 @@ namespace Remind
             services.AddScoped<IReminderService, ReminderService>();
             services.AddScoped<IUserSettingsService, UserSettingsService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IReminderService, ReminderService>();
             services.AddAutoMapper();
         }
 

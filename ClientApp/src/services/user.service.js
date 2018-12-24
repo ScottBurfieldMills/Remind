@@ -84,7 +84,13 @@ function updateSettings(userId, userSettings) {
 
     console.log(requestOptions);
 
-    return fetch(`/users/${userId}/settings`, requestOptions).then(handleResponse);
+    return fetch(`/users/${userId}/settings`, requestOptions)
+        .then(handleResponse)
+        .then(resp => {
+            let user = JSON.parse(localStorage.getItem('user'));
+            user.reminderFrequencyId = userSettings.defaultReminderFrequency;
+            localStorage.setItem('user', JSON.stringify(user));
+        });
 }
 
 function getSettings(userId) {

@@ -1,7 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Button, ButtonGroup } from 'reactstrap'
 import { userActions } from '../actions';
+import { ReminderFrequencyList } from './ReminderFrequencyList';
 
 class AccountPage extends Component {
 
@@ -9,24 +9,17 @@ class AccountPage extends Component {
         super(props);
 
         this.state = {
-            frequency: '',
-            availableFrequencies: ['1d', '3d', '7d']
+            frequency: this.props.user.reminderFrequencyId.toString()
         };
 
-        this.handleClick = this.handleClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSelectFrequency = this.handleSelectFrequency.bind(this);
     }
 
     componentDidMount() {
 	    const userId = this.props.user.id;
 
 	    this.props.dispatch(userActions.getSettings(userId));
-    }
-     
-    handleClick(event) {
-	    event.preventDefault();
-        const { name, value } = event.target;
-        this.setState({ [name]: value });
     }
 
     handleSubmit(event) {
@@ -41,10 +34,16 @@ class AccountPage extends Component {
         dispatch(userActions.updateSettings(this.props.user.id, userSettings));
     }
 
-    render() {
-        const { possibleNotificationTypes } = this.props.settings || {};
-        const { availableFrequencies } = this.state;
+    handleSelectFrequency(frequencyId) {
+        this.setState({
+	        frequency: frequencyId
+        });
+    }
 
+    render() {
+        const settings = this.props.settings || {};
+
+        const { possibleNotificationTypes, possibleReminderFrequencies } = settings;
 	    return (
             <div className="col-md-12">
                 <h1>Account</h1>
@@ -52,20 +51,10 @@ class AccountPage extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <legend>Notification Settings</legend>
 
-                    <div className="form-group row">
-                        <label className="col-sm-2">Default frequency</label>
-
-                        <div className="col-sm-10">
-	                        <ButtonGroup data-toggle="button">
-                                {availableFrequencies.map((frequency) =>
-                                    <Button key={frequency} onClick={this.handleClick} name="frequency" value={frequency}
-                                        color={this.state.frequency === frequency ? 'primary' : 'default'}>
-                                        {frequency}
-                                    </Button>
-                                )}
-	                        </ButtonGroup>
-                        </div>
-                    </div>
+                    <ReminderFrequencyList frequencies={possibleReminderFrequencies}
+						label="Default Frequency"
+                        selectedFrequency={this.state.frequency}
+                        onSelectFrequency={this.handleSelectFrequency}></ReminderFrequencyList>
 
                     <fieldset>
                         <legend>Notification Types</legend>

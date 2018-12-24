@@ -7,8 +7,8 @@ export function reminders(state = {}, action) {
                 loading: true
             };
         case reminderConstants.GETALL_SUCCESS:
-
             return {
+                ...state,
                 items: action.reminders
             };
         case reminderConstants.GETALL_FAILURE:
@@ -17,6 +17,7 @@ export function reminders(state = {}, action) {
             };
         case reminderConstants.CREATE_REQUEST:
             return {
+                ...state,
                 loading: true
 	        };
         case reminderConstants.CREATE_SUCCESS:
@@ -28,6 +29,12 @@ export function reminders(state = {}, action) {
 
             return {
                 ...state
+            }
+        case reminderConstants.GETFREQUENCIES_SUCCESS:
+            return {
+                ...state,
+                loading: false, 
+                frequencies: action.reminder 
             }
         default:
             return state;

@@ -2,7 +2,8 @@
 
 export const reminderService = {
     getAll,
-    create
+    create,
+    getFrequencies
 }
 
 function getAll() {
@@ -14,18 +15,28 @@ function getAll() {
 	return fetch(`/reminders`, requestOptions).then(handleResponse);
 }
 
-function create(url) {
+function create(url, frequencyId) {
 	const requestOptions = {
         method: 'POST',
 		headers: {
             ...authHeader(),
 			'Content-Type': 'application/json'
     },
-		body: JSON.stringify({ url: url })
+        body: JSON.stringify({ url: url, reminderFrequencyId: frequencyId })
     };
 
 	return fetch(`/reminders/create`, requestOptions)
 		.then(handleResponse);
+}
+
+function getFrequencies() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    }
+
+    return fetch(`/reminders/frequencies`, requestOptions)
+	    .then(handleResponse);
 }
 
 function handleResponse(response) {

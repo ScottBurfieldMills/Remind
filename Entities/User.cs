@@ -11,7 +11,7 @@ namespace Remind.Entities
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         
-        public int ReminderFrequencyId { get; set; }
+        public int? ReminderFrequencyId { get; set; }
         [ForeignKey("ReminderFrequencyId")]
         public ReminderFrequency ReminderFrequency { get; set; }
 

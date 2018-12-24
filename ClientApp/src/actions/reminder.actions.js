@@ -4,7 +4,8 @@ import { alertActions } from './';
 
 export const reminderActions = {
     getAll,
-    create
+    create,
+    getReminderFrequencies
 };
 
 function getAll() {
@@ -26,24 +27,45 @@ function getAll() {
     function failure(error) { return { type: reminderConstants.GETALL_FAILURE, error } }
 }
 
-function create(url) {
-	return dispatch => {
-		dispatch(request());
+function create(url, frequencyId) {
+    return dispatch => {
+        dispatch(request());
 
-		reminderService.create(url)
-			.then(
-				reminder => {
+        reminderService.create(url, frequencyId)
+            .then(
+                reminder => {
                     dispatch(success(reminder));
                     dispatch(alertActions.success('Created reminder'));
-				},
-				error => {
-					dispatch(failure(error.toString()));
-					dispatch(alertActions.error(error.toString()));
-				}
-			);
-	};
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
 
     function request() { return { type: reminderConstants.CREATE_REQUEST } }
     function success(reminder) { return { type: reminderConstants.CREATE_SUCCESS, reminder } }
     function failure(error) { return { type: reminderConstants.CREATE_FAILURE, error } }
+}
+
+function getReminderFrequencies() {
+    return dispatch => {
+        dispatch(request());
+
+        reminderService.getFrequencies()
+            .then(
+                reminderFrequencies => {
+                    dispatch(success(reminderFrequencies));
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    }
+
+    function request() { return { type: reminderConstants.GETFREQUENCIES_REQUEST } }
+    function success(reminder) { return { type: reminderConstants.GETFREQUENCIES_SUCCESS, reminder } }
+    function failure(error) { return { type: reminderConstants.GETFREQUENCIES_FAILURE, error } }
 }
