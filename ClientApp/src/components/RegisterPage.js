@@ -47,36 +47,50 @@ class RegisterPage extends React.Component {
     render() {
         const { registering } = this.props;
         const { user, submitted } = this.state;
+
+        const isFirstNameInvalid = submitted && !user.firstName;
+        const isLastNameInvalid = submitted && !user.lastName;
+        const isUsernameInvalid = submitted && !user.username;
+        const isPasswordInvalid = submitted && !user.password;
+
+        function getErrorCss(truthy) {
+	        return truthy ? ' is-invalid' : '';
+        }
+
         return (
-            <div className="col-md-6 col-md-offset-3">
+            <div className="col-md-6">
                 <h2>Register</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !user.firstName ? ' has-error' : '')}>
+                    <div className="form-group">
                         <label htmlFor="firstName">First Name</label>
-                        <input type="text" className="form-control" name="firstName" value={user.firstName} onChange={this.handleChange} />
-                        {submitted && !user.firstName &&
-                            <div className="help-block">First Name is required</div>
+                        <input type="text"
+                            className={'form-control' + getErrorCss(isFirstNameInvalid)}
+                            name="firstName" value={user.firstName} onChange={this.handleChange} />
+                        {isFirstNameInvalid &&
+                            <div className="invalid-feedback">First Name is required</div>
                         }
                     </div>
-                    <div className={'form-group' + (submitted && !user.lastName ? ' has-error' : '')}>
+                    <div className="form-group">
                         <label htmlFor="lastName">Last Name</label>
-                        <input type="text" className="form-control" name="lastName" value={user.lastName} onChange={this.handleChange} />
-                        {submitted && !user.lastName &&
-                            <div className="help-block">Last Name is required</div>
+                        <input type="text"
+                            className={'form-control' + getErrorCss(isLastNameInvalid)}
+                            name="lastName" value={user.lastName} onChange={this.handleChange} />
+                        {isLastNameInvalid &&
+                            <div className="invalid-feedback">Last Name is required</div>
                         }
                     </div>
-                    <div className={'form-group' + (submitted && !user.username ? ' has-error' : '')}>
+                    <div className="form-group">
                         <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={user.username} onChange={this.handleChange} />
-                        {submitted && !user.username &&
-                            <div className="help-block">Username is required</div>
+                        <input type="text" className={'form-control' + getErrorCss(isUsernameInvalid)} name="username" value={user.username} onChange={this.handleChange} />
+                        {isUsernameInvalid &&
+                            <div className="invalid-feedback">Username is required</div>
                         }
                     </div>
-                    <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
+                    <div className="form-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
-                        {submitted && !user.password &&
-                            <div className="help-block">Password is required</div>
+                        <input type="password" className={'form-control' + getErrorCss(isPasswordInvalid)} name="password" value={user.password} onChange={this.handleChange} />
+                        {isPasswordInvalid &&
+                            <div className="invalid-feedback">Password is required</div>
                         }
                     </div>
                     <div className="form-group">

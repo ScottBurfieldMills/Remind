@@ -21,15 +21,19 @@ class ReminderList extends React.Component {
 
         if (this.props.reminders.items && this.props.reminders.items.length > 0) {
             reminderList = (
-	            <ul>
+	            <div className="reminder-list">
                     {this.props.reminders.items.map((reminder) => {
-	                    return (<li key={reminder.id}>
-                            <a href={reminder.url} target="blank" placeholder="https://www.example.com">
-                                {reminder.url}
-                            </a>
-                        </li>);
+                        return (<div key={reminder.id} className="card">
+                            <div className="card-body">
+	                            {reminder.reminderSent && <span>! </span>}
+
+	                            <a href={reminder.url} target="blank" placeholder="https://www.example.com">
+		                            {reminder.url}
+	                            </a>
+							</div>
+                        </div>);
                     })}
-                </ul>
+                </div>
             );
         } else if (this.props.reminders.items && this.props.reminders.items.length === 0 && !loading) {
 	        reminderList = (
@@ -39,7 +43,7 @@ class ReminderList extends React.Component {
 
         return (
             <div className="col-md-12">
-                <h2>Reminder List</h2>
+                <h2>Reminders</h2>
 
                 {reminderList}
             </div>

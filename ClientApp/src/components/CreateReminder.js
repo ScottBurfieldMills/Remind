@@ -52,17 +52,25 @@ class CreateReminder extends React.Component {
     }
 
     render() {
-	    const { url, submitted } = this.state;
+        const { url, submitted } = this.state;
+
+        const isInvalid = submitted && !url;
 
         return (
             <div className="col-md-12">
                 <h2>Create Reminder</h2>
 
                 <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group row ' + (submitted && !url ? ' has-error' : '')}>
+                    <div className="form-group row">
                         <label htmlFor="url" className="col-sm-2">Url</label>
                         <div className="col-sm-10">
-	                        <input type="text" className="form-control" value={this.state.url} name="url" onChange={this.handleChange} />
+                            <input type="text"
+                                className={'form-control' + (isInvalid ? ' is-invalid' : '')}
+                                value={this.state.url}
+                                name="url" onChange={this.handleChange} />
+
+                            {isInvalid &&
+                                <div className="invalid-feedback">Url is required</div>}
                         </div>
                     </div>
                     

@@ -40,22 +40,30 @@ class LoginPage extends React.Component {
     render() {
         const { loggingIn } = this.props;
         const { username, password, submitted } = this.state;
+
+        const isUsernameInvalid = submitted && !username;
+        const isPasswordInvalid = submitted && !password;
+
         return (
-            <div className="col-md-6 col-md-offset-3">
+            <div className="col-md-6">
                 <h2>Login</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
+                    <div className="form-group">
                         <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
-                        {submitted && !username &&
-                            <div className="help-block">Username is required</div>
+                        <input type="text"
+                            className={'form-control' + (isUsernameInvalid ? ' is-invalid' : '')}
+                            name="username" value={username} onChange={this.handleChange} />
+                        {isUsernameInvalid &&
+                            <div className="invalid-feedback">Username is required</div>
                         }
                     </div>
-                    <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
+                    <div className="form-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
-                        {submitted && !password &&
-                            <div className="help-block">Password is required</div>
+                        <input type="password"
+                            className={'form-control' + (isPasswordInvalid ? ' is-invalid' : '')}
+                            name="password" value={password} onChange={this.handleChange} />
+                        {isPasswordInvalid &&
+                            <div className="invalid-feedback">Password is required</div>
                         }
                     </div>
                     <div className="form-group">
