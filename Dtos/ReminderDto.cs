@@ -6,5 +6,7 @@
         public string Url { get; set; }
 
         public int ReminderFrequencyId { get; set; }
+
+        public bool ReminderSent { get; set; }
     }
 }

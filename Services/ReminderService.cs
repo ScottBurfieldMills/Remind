@@ -49,6 +49,7 @@ namespace Remind.Services
         public IEnumerable<Reminder> GetByUser(int userId)
         {
             var reminders = _context.Reminders.Where(x => x.UserId == userId)
+                .OrderBy(x => x.ReminderSent)
                 .ToList();
 
             return reminders;
