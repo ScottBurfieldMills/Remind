@@ -20,5 +20,7 @@ namespace Remind.Entities
         [ForeignKey("ReminderFrequencyId")]
         public ReminderFrequency ReminderFrequency { get; set; }
         public int ReminderFrequencyId { get; set; }
+
+        public bool ReminderSent { get; set; }
     }
 }

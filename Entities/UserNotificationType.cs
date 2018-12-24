@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Remind.Entities
 {
@@ -11,5 +12,8 @@ namespace Remind.Entities
         public int NotificationTypeId { get; set; }
 
         public int UserId { get; set; }
+
+        [MaxLength(255)]
+        public string Value { get; set; }
     }
 }

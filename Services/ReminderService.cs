@@ -2,6 +2,7 @@
 using Remind.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Remind.Helpers;
 
 namespace Remind.Services
@@ -14,8 +15,11 @@ namespace Remind.Services
         IEnumerable<Reminder> GetByUser(int userId);
 
         Reminder Create(Reminder reminder);
+        void Update(Reminder reminder);
 
         IEnumerable<ReminderFrequency> GetFrequencies();
+
+        IEnumerable<Reminder> GetRemindersToBeSent();
     }
 
     public class ReminderService : IReminderService
@@ -62,6 +66,21 @@ namespace Remind.Services
             _context.SaveChanges();
 
             return reminder;
+        }
+
+        public void Update(Reminder reminder)
+        {
+            _context.Reminders.Attach(reminder);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Reminder> GetRemindersToBeSent()
+        {
+            var reminders = _context.Reminders.Where(x => x.RemindAt <= DateTime.Now && !x.ReminderSent)
+                .Include(x => x.User.UserNotificationType)
+                .ToList();
+
+            return reminders;
         }
 
         private DateTime GetReminderDate(Reminder reminder)

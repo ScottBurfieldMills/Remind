@@ -13,7 +13,9 @@ using Remind.Helpers;
 using Remind.Services;
 using System.Text;
 using System.Threading.Tasks;
+using Hangfire;
 using Remind.Entities;
+using Remind.Jobs;
 
 namespace Remind
 {
@@ -33,7 +35,7 @@ namespace Remind
             services.Configure<ConnectionStrings>(connectionStringsSection);
 
             var connectionStrings = connectionStringsSection.Get<ConnectionStrings>();
-            
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             //services.AddDbContext<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
             services.AddDbContext<DataContext>(x => x.UseSqlServer(connectionStrings.Default));
@@ -85,6 +87,8 @@ namespace Remind
                 };
             });
 
+            services.AddHangfire(x => x.UseSqlServerStorage(connectionStrings.Default));
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IReminderService, ReminderService>();
             services.AddScoped<IUserSettingsService, UserSettingsService>();
@@ -106,6 +110,9 @@ namespace Remind
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseHangfireServer();
+            app.UseHangfireDashboard();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -135,6 +142,8 @@ namespace Remind
                 .AllowCredentials());
 
             app.UseAuthentication();
+
+            RecurringJob.AddOrUpdate<SendReminders>(x => x.Send(), Cron.Minutely);
         }
     }
 }
